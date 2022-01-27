@@ -1,6 +1,7 @@
 <!--
 	TODO:
 	- [ ] Darkmode
+  - [ ] Acessibilidade
 -->
 
 <script>
@@ -17,6 +18,12 @@
   let bebidaFinal;
   let cervejaFinal;
 	let modal = false;
+
+  // calcula os valores do box e da margem do botão 
+  // para não ter problemas ao abrir o teclado em dispositivos mobile
+  const windowHeight = window.innerHeight;
+  const boxHeight = windowHeight / 2;
+  const buttonMarginTop = boxHeight / 5.5;
 
   function calculo(e) {
     // previne o comportamento padrão do formulário
@@ -93,7 +100,7 @@
 </script>
 
 <main>
-  <div class="box">
+  <div class="box" style="height: {boxHeight}px">
     <h1>Churrascômetro 🍖</h1>
 
     <div class="form-area">
@@ -125,17 +132,17 @@
           min={1}
           required
         />
-        <button type="submit" class="calc-button">Calcular</button>
+        <button type="submit" class="calc-button" style="margin-top: {buttonMarginTop}px">Calcular</button>
       </form>
     </div>
   </div>
 
 	{#if modal}
   <div class="modal" transition:slide>
-    <div class="modal-content">
-      <h1 class="modal-title" transition:fade="{{duration: 100}}">Você precisará de...</h1>
+    <div class="modal-content" style="height: {boxHeight}px">
+      <h1 class="modal-title" in:fade="{{duration: 250}}" out:fade="{{duration: 100}}">Você precisará de...</h1>
 
-      <div class="text-area" transition:fade="{{duration: 100}}">
+      <div class="text-area" in:fade="{{duration: 250}}" out:fade="{{duration: 100}}">
         <p>
           <strong>{carneFinal} kg</strong> de carne 🥩
         </p>
@@ -148,7 +155,7 @@
         </p>
       </div>
 
-      <button class="modal-button" on:click={() => {modal = false}} transition:fade="{{duration: 100}}">Voltar</button>
+      <button class="modal-button" on:click={() => {modal = false}} in:fade="{{duration: 250}}" out:fade="{{duration: 100}}">Voltar</button>
     </div>
   </div>
 	{/if}
@@ -182,7 +189,7 @@
     margin: 0;
     padding: 5%;
     width: 100%;
-    height: 50%;
+    /* height: 50%; */
     border-radius: 5px;
 
     background-color: #fff;
@@ -241,7 +248,7 @@
   .calc-button {
     width: 100%;
     height: 50px;
-    margin: 16% 0 0;
+    /* margin: 16% 0 0; */
 
     outline: none;
     border: solid 2px #a0a0a0;
@@ -253,7 +260,7 @@
     font-weight: 600;
     color: #777;
 
-    transition: 400ms;
+    transition: 300ms;
   }
 
   form:valid button {
@@ -274,7 +281,7 @@
     height: 100vh;
     width: 35%;
 
-    position: fixed;
+    position: absolute;
     left: 50%;
     top: 50%;
     -webkit-transform: translate(-50%, -50%);
@@ -294,7 +301,7 @@
     border-radius: 5px;
     padding: 5%;
     width: 100%;
-    height: 50%;
+    /* height: 50%; */
 
     background-color: #ff574d;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
@@ -329,6 +336,8 @@
     font-size: 18px;
     font-weight: 600;
     color: #f0f0f0;
+
+    transition: 300ms;
   }
 
   .modal-button:hover {
