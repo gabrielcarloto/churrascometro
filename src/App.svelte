@@ -1,29 +1,41 @@
 <!--
 	TODO:
 	- [ ] Darkmode
-  - [ ] Acessibilidade
 -->
-
 <script>
-	import { fade, slide } from 'svelte/transition';
+  import { onMount } from "svelte";
 
-	let bebidaPlural;
-	let inputAdultos;
-	let inputCriancas;
-	let inputDuracao;
-	let carne;
-	let bebida;
-	let cerveja;
-	let carneFinal;
+  import { fade, slide } from "svelte/transition";
+
+  let fieldset;
+  let inputAdultos;
+  let inputCriancas;
+  let inputDuracao;
+  let carne;
+  let bebida;
+  let cerveja;
+  let carneFinal;
   let bebidaFinal;
   let cervejaFinal;
-	let modal = false;
+  let bebidaPlural;
+  let modal = false;
+  let reduceMotion = matchMedia("(prefers-reduced-motion)").matches;
 
-  // calcula os valores do box e da margem do botão 
+  onMount(() => {
+    console.log(reduceMotion);
+  });
+
+  // calcula os valores do box e da margem do botão
   // para não ter problemas ao abrir o teclado em dispositivos mobile
   const windowHeight = window.innerHeight;
   const boxHeight = windowHeight / 2;
   const buttonMarginTop = boxHeight / 5.5;
+
+  // função para fechar a modal
+  function closeModal() {
+    modal = false;
+    fieldset.removeAttribute("disabled", "disabled");
+  }
 
   function calculo(e) {
     // previne o comportamento padrão do formulário
@@ -37,10 +49,10 @@
     const criancas = formData.get("criancas");
     const duracao = formData.get("duracao");
 
-		// limpa os inputs
-		inputAdultos.value = '';
-		inputCriancas.value = '';
-		inputDuracao.value = '';
+    // limpa os inputs
+    inputAdultos.value = "";
+    inputCriancas.value = "";
+    inputDuracao.value = "";
 
     // calcula a quantia de carne e bebidas com base nos dados do formulário
     /*
@@ -52,50 +64,44 @@
 			*/
 
     function carnePorPessoa(duracao) {
-      if (duracao >= 6) {
-        return 650;
-      } else {
-        return 400;
-      }
+      return duracao >= 6 ? 650 : 400;
     }
 
     function cervejaPorPessoa(duracao) {
-      if (duracao >= 6) {
-        return 2000;
-      } else {
-        return 1200;
-      }
+      return duracao >= 6 ? 2000 : 1200;
     }
 
     function bebidaPorPessoa(duracao) {
-      if (duracao >= 6) {
-        return 1500;
-      } else {
-        return 1000;
-      }
+      return duracao >= 6 ? 1500 : 1000;
     }
 
-    carne = adultos * carnePorPessoa(duracao) + criancas * carnePorPessoa(duracao) * 0.5;
+    carne =
+      adultos * carnePorPessoa(duracao) +
+      criancas * carnePorPessoa(duracao) * 0.5;
     cerveja = adultos * cervejaPorPessoa(duracao);
-    bebida = adultos * bebidaPorPessoa(duracao) + criancas * bebidaPorPessoa(duracao) * 0.5;
+    bebida =
+      adultos * bebidaPorPessoa(duracao) +
+      criancas * bebidaPorPessoa(duracao) * 0.5;
 
-		carneFinal = carne / 1000
-		cervejaFinal = Math.ceil(cerveja / 355)
-		bebidaFinal = Math.ceil(bebida / 2000)
+    carneFinal = carne / 1000;
+    cervejaFinal = Math.ceil(cerveja / 355);
+    bebidaFinal = Math.ceil(bebida / 2000);
 
-		// determina se a "bebida" deve estar no plural ou não
-		if (bebidaFinal > 1) {
-			bebidaPlural = 's';
-		} else {
-			bebidaPlural = '';
-		}
+    // determina se a "bebida" deve estar no plural ou não
+    bebidaPlural = bebidaFinal > 1 ? "s" : "";
 
-    // console.log(
-    //   `Carne: ${carne}g; Cerveja: ${cerveja}ml; Refrigerante/Água: ${bebida}ml`
-    // );
+    // mostra a modal e desabilita o formulário para que o site seja mais keyboard-friendly
+    modal = true;
+    fieldset.setAttribute("disabled", "disabled");
 
-		// mostra a modal
-		modal = true;
+    // fecha a modal ao apertar enter
+    if (modal === true) {
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") {
+          closeModal();
+        }
+      });
+    }
   }
 </script>
 
@@ -105,60 +111,89 @@
 
     <div class="form-area">
       <form on:submit={calculo}>
-        <input
-          id="adultos"
-					bind:this={inputAdultos}
-          name="adultos"
-          type="number"
-          placeholder="Adultos"
-          min={1}
-          required
-        />
-        <input
-          id="criancas"
-					bind:this={inputCriancas}
-          name="criancas"
-          type="number"
-          placeholder="Crianças"
-          min={0}
-          required
-        />
-        <input
-          id="duracao"
-					bind:this={inputDuracao}
-          name="duracao"
-          type="number"
-          placeholder="Duração (horas)"
-          min={1}
-          required
-        />
-        <button type="submit" class="calc-button" style="margin-top: {buttonMarginTop}px">Calcular</button>
+        <fieldset bind:this={fieldset}>
+          <input
+            id="adultos"
+            bind:this={inputAdultos}
+            name="adultos"
+            type="number"
+            placeholder="Adultos"
+            min={1}
+            required
+          />
+          <input
+            id="criancas"
+            bind:this={inputCriancas}
+            name="criancas"
+            type="number"
+            placeholder="Crianças"
+            min={0}
+            required
+          />
+          <input
+            id="duracao"
+            bind:this={inputDuracao}
+            name="duracao"
+            type="number"
+            placeholder="Duração (horas)"
+            min={1}
+            required
+          />
+          <button
+            type="submit"
+            class="calc-button"
+            style="margin-top: {buttonMarginTop}px">Calcular</button
+          >
+        </fieldset>
       </form>
     </div>
   </div>
 
-	{#if modal}
-  <div class="modal" transition:slide>
-    <div class="modal-content" style="height: {boxHeight}px">
-      <h1 class="modal-title" in:fade="{{duration: 250}}" out:fade="{{duration: 100}}">Você precisará de...</h1>
+  {#if modal}
+    <div
+      class="modal"
+      role="dialog"
+      aria-labelledby="modal-title"
+      transition:slide={{ duration: reduceMotion ? 0 : 550 }}
+    >
+      <div class="modal-content" style="height: {boxHeight}px">
+        <h1
+          class="modal-title"
+          id="modal-title"
+          in:fade={{ duration: reduceMotion ? 0 : 250 }}
+          out:fade={{ duration: reduceMotion ? 0 : 100 }}
+        >
+          Você precisará de...
+        </h1>
 
-      <div class="text-area" in:fade="{{duration: 250}}" out:fade="{{duration: 100}}">
-        <p>
-          <strong>{carneFinal} kg</strong> de carne 🥩
-        </p>
-        <p>
-          <strong>{cervejaFinal} latas</strong> de cerveja 🍺
-        </p>
-        <p>
-          <strong>{bebidaFinal} garrafa{bebidaPlural}</strong> de 2L de
-          bebidas 🥤
-        </p>
+        <div
+          class="text-area"
+          in:fade={{ duration: reduceMotion ? 0 : 250 }}
+          out:fade={{ duration: reduceMotion ? 0 : 100 }}
+        >
+          <p>
+            <strong>{carneFinal} kg</strong> de carne 🥩
+          </p>
+          <p>
+            <strong>{cervejaFinal} latas</strong> de cerveja 🍺
+          </p>
+          <p>
+            <strong>{bebidaFinal} garrafa{bebidaPlural}</strong> de 2L de bebida{bebidaPlural}
+            🥤
+          </p>
+        </div>
+
+        <button
+          class="modal-button"
+          on:click={() => {
+            closeModal();
+          }}
+          in:fade={{ duration: reduceMotion ? 0 : 250 }}
+          out:fade={{ duration: reduceMotion ? 0 : 100 }}>Voltar</button
+        >
       </div>
-
-      <button class="modal-button" on:click={() => {modal = false}} in:fade="{{duration: 250}}" out:fade="{{duration: 100}}">Voltar</button>
     </div>
-  </div>
-	{/if}
+  {/if}
 </main>
 
 <style>
@@ -189,7 +224,6 @@
     margin: 0;
     padding: 5%;
     width: 100%;
-    /* height: 50%; */
     border-radius: 5px;
 
     background-color: #fff;
@@ -200,6 +234,11 @@
     margin: 0 auto;
   }
 
+  fieldset {
+    border: 0;
+    padding: 0;
+  }
+
   input {
     width: 100%;
     height: 50px;
@@ -208,12 +247,13 @@
     box-sizing: border-box;
 
     outline: none;
-    border: solid 2px #a0a0a0;
+    border: solid 2px #606060;
     border-radius: 3px;
+    background-color: #fafafa;
 
     font-family: "Nunito Sans", sans-serif;
     font-size: 16px;
-    color: #a0a0a0;
+    color: #606060;
 
     transition: 200ms;
   }
@@ -226,23 +266,23 @@
 
   input:focus::placeholder,
   input:valid::placeholder {
-    color: #606060 !important;
+    color: #404040 !important;
   }
 
   input:hover {
-    border: solid 2px #606060;
-    color: #606060;
+    border: solid 2px #404040;
+    color: #404040;
   }
 
   input:hover::placeholder {
-    color: #606060;
+    color: #404040;
   }
 
   input::placeholder {
     font-family: "Nunito Sans", sans-serif;
     font-size: 16px;
     font-weight: 600;
-    color: #a0a0a0;
+    color: #606060;
   }
 
   .calc-button {
@@ -251,14 +291,14 @@
     /* margin: 16% 0 0; */
 
     outline: none;
-    border: solid 2px #a0a0a0;
+    border: solid 2px #606060;
     border-radius: 3px;
-    background-color: #fff;
+    background-color: #fafafa;
 
     font-family: "Nunito Sans", sans-serif;
     font-size: 17px;
     font-weight: 600;
-    color: #777;
+    color: #606060;
 
     transition: 300ms;
   }
@@ -378,18 +418,18 @@
       margin: clamp(30px, 9vh, 70px) 0 0;
     }
 
-		.modal {
-			width: 90%;
-		}
+    .modal {
+      width: 90%;
+    }
 
-		p {
-			font-size: 21px;
-		}
+    p {
+      font-size: 21px;
+    }
 
-		.modal-button {
-			height: 45px;
-			font-size: 15px;
-		}
+    .modal-button {
+      height: 45px;
+      font-size: 15px;
+    }
   }
 
   @media (max-height: 700px) {
@@ -398,61 +438,61 @@
     }
   }
 
-	@media (min-width: 701px) and (orientation: portrait) {
-		main {
+  @media (min-width: 701px) and (orientation: portrait) {
+    main {
       width: 90%;
     }
 
-		.modal {
-			width: 90%;
-		}
-	}
+    .modal {
+      width: 90%;
+    }
+  }
 
-	@media (min-width: 701px) and (max-width: 1900px) and (orientation: landscape) {
-		main {
-			width: 40%;
-		}
+  @media (min-width: 701px) and (max-width: 1900px) and (orientation: landscape) {
+    main {
+      width: 40%;
+    }
 
-		.box {
-			height: 60%;
-		}
+    .box {
+      height: 60%;
+    }
 
-		.modal {
-			width: 40%;
-		}
+    .modal {
+      width: 40%;
+    }
 
-		.modal-content {
-			height: 60%;
-		}
-	}
+    .modal-content {
+      height: 60%;
+    }
+  }
 
-	@media (min-width: 2000px) and (orientation: landscape) {
-		h1 {
-			font-size: 3vw;
-		}
+  @media (min-width: 2000px) and (orientation: landscape) {
+    h1 {
+      font-size: 3vw;
+    }
 
-		input {
-			height: 5vh;
-			font-size: .8vw;
-		}
+    input {
+      height: 5vh;
+      font-size: 0.8vw;
+    }
 
-		input::placeholder {
-			font-size: .8vw;
-		}
+    input::placeholder {
+      font-size: 0.8vw;
+    }
 
-		.calc-button {
-			height: 5vh;
-			font-size: 1vw;
-			margin: 15vh 0 0;
-		}
+    .calc-button {
+      height: 5vh;
+      font-size: 1vw;
+      margin: 15vh 0 0;
+    }
 
-		p {
-			font-size: 1.5vw;
-		}
+    p {
+      font-size: 1.5vw;
+    }
 
-		.modal-button {
-			height: 5vh;
-			font-size: 1vw;
-		}
-	}
+    .modal-button {
+      height: 5vh;
+      font-size: 1vw;
+    }
+  }
 </style>
