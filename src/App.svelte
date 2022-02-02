@@ -3,8 +3,6 @@
 	- [ ] Darkmode
 -->
 <script>
-  import { onMount } from "svelte";
-
   import { fade, slide } from "svelte/transition";
 
   let fieldset;
@@ -20,10 +18,6 @@
   let bebidaPlural;
   let modal = false;
   let reduceMotion = matchMedia("(prefers-reduced-motion)").matches;
-
-  onMount(() => {
-    console.log(reduceMotion);
-  });
 
   // calcula os valores do box e da margem do botão
   // para não ter problemas ao abrir o teclado em dispositivos mobile
