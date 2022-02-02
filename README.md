@@ -10,14 +10,12 @@
   <a href="https://calculachurras.netlify.app/">Acessar a demonstração</a>
 </h3>
 
----
-
 ## Índice
 
 - [Sobre](#clipboard-sobre)
   - [Base de cálculo](#1234-base-de-cálculo)
   - [Tecnologia utilizada](#computer-tecnologia-utilizada)
-- [Como baixar o projeto](#file-folder-como-baixar-o-projeto)
+- [Como baixar o projeto](#file_folder-como-baixar-o-projeto)
 
 ---
 
@@ -33,7 +31,7 @@ O **churrascômetro** é um simples site que calcula quanta carne e bebida você
 | **Cerveja** | 1200ml por pessoa  | 2000ml por pessoa  |
 | **Bebidas** | 1000ml por pessoa* | 1500ml por pessoa* |
 
-*Obs: caso a pessoa seja uma criança, o valor é dividido por dois.
+*Caso a pessoa seja uma criança, o valor é dividido por dois.
 
 ### :computer: Tecnologia utilizada
 
