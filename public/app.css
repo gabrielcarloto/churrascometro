@@ -1,0 +1,303 @@
+/* MAIN */
+
+main {
+  display: flex;
+  align-items: center;
+  margin: 0 auto;
+  width: 35%;
+  height: 100vh;
+}
+
+.box {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  margin: 0;
+  padding: 5%;
+  width: 100%;
+  border-radius: 5px;
+
+  background-color: var(--box-bg-color);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+h1 {
+  font-family: "Roboto", sans-serif;
+  font-size: 50px;
+  margin: 0 auto;
+  color: var(--main-title-color);
+}
+
+.form-area {
+  margin: 0 auto;
+}
+
+fieldset {
+  border: 0;
+  padding: 0;
+}
+
+input {
+  width: 100%;
+  height: 50px;
+  margin: 0 0 10px;
+  padding: 0 10px;
+  box-sizing: border-box;
+
+  outline: none;
+  border: solid 2px var(--form-color);
+  border-radius: 3px;
+  background-color: var(--form-bg-color);
+
+  font-family: "Nunito Sans", sans-serif;
+  font-size: 16px;
+  font-weight: var(--form-font-weight);
+  color: var(--form-color);
+
+  transition: 200ms;
+}
+
+input:focus,
+input:valid {
+  border: solid 2px var(--input-focus-color) !important;
+  color: var(--input-focus-color) !important;
+}
+
+input:focus::placeholder,
+input:valid::placeholder {
+  color: var(--input-focus-color) !important;
+}
+
+input:hover {
+  border: solid 2px var(--input-hover-color);
+  color: var(--input-hover-color);
+}
+
+input:hover::placeholder {
+  color: var(--input-hover-color);
+}
+
+input::placeholder {
+  font-family: "Nunito Sans", sans-serif;
+  font-size: 16px;
+  font-weight: var(--form-font-weight);
+  color: var(--input-color);
+}
+
+.calc-button {
+  width: 100%;
+  height: 50px;
+  /* margin: 16% 0 0; */
+
+  outline: none;
+  border: solid 2px var(--form-color);
+  border-radius: 3px;
+  background-color: var(--form-bg-color);
+
+  font-family: "Nunito Sans", sans-serif;
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--form-color);
+
+  transition: 300ms;
+}
+
+form:valid button {
+  border: solid 2px var(--button-valid-border-color);
+  background-color: var(--button-valid-bg-color);
+  color: var(--button-valid-color);
+}
+
+form:valid button:hover {
+  border: solid 2px var(--button-valid-hover-border-color);
+  background-color: var(--button-valid-hover-bg-color);
+  color: var(--button-valid-hover-color);
+
+  cursor: pointer;
+}
+
+/* MODAL */
+
+.modal {
+  height: 100vh;
+  width: 35%;
+
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+}
+
+.modal-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  border-radius: 5px;
+  padding: 5%;
+  width: 100%;
+  /* height: 50%; */
+
+  background-color: var(--modal-content-bg-color);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+
+  transition: 300ms;
+}
+
+.modal-title {
+  color: var(--modal-text-color);
+}
+
+.text-area {
+  text-align: center;
+}
+
+p {
+  font-family: "Nunito Sans", sans-serif;
+  font-size: 30px;
+  font-weight: 400;
+  color: var(--modal-text-color);
+
+  margin: 20px 0;
+}
+
+.modal-button {
+  width: 100%;
+  height: 50px;
+  margin: 0 auto;
+
+  outline: none;
+  border: solid 2px var(--modal-button-border-color);
+  border-radius: 3px;
+  background-color: var(--modal-button-bg-color);
+
+  font-family: "Nunito Sans", sans-serif;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--modal-button-color);
+
+  transition: 300ms;
+}
+
+.modal-button:hover {
+  border: solid 2px var(--modal-button-hover-border-color);
+  background-color: var(--modal-button-hover-bg-color);
+  color: var(--modal-button-hover-color);
+  cursor: pointer;
+}
+
+@media (max-width: 700px) {
+  main {
+    width: 90%;
+  }
+
+  .box {
+    width: 90%;
+    margin: 0 auto;
+  }
+
+  h1 {
+    font-size: 9vw;
+  }
+
+  input {
+    height: 45px;
+    font-size: 14px;
+    padding: 3%;
+  }
+
+  input::placeholder {
+    font-size: 14px;
+  }
+
+  .calc-button {
+    height: 45px;
+    font-size: 15px;
+
+    margin: clamp(30px, 9vh, 70px) 0 0;
+  }
+
+  .modal {
+    width: 90%;
+  }
+
+  p {
+    font-size: 21px;
+  }
+
+  .modal-button {
+    height: 45px;
+    font-size: 15px;
+  }
+}
+
+@media (max-height: 700px) {
+  .calc-button {
+    margin: 5.5vh 0 0;
+  }
+}
+
+@media (min-width: 701px) and (orientation: portrait) {
+  main {
+    width: 90%;
+  }
+
+  .modal {
+    width: 90%;
+  }
+}
+
+@media (min-width: 701px) and (max-width: 1900px) and (orientation: landscape) {
+  main {
+    width: 40%;
+  }
+
+  .box {
+    height: 60%;
+  }
+
+  .modal {
+    width: 40%;
+  }
+
+  .modal-content {
+    height: 60%;
+  }
+}
+
+@media (min-width: 2000px) and (orientation: landscape) {
+  h1 {
+    font-size: 3vw;
+  }
+
+  input {
+    height: 5vh;
+    font-size: 0.8vw;
+  }
+
+  input::placeholder {
+    font-size: 0.8vw;
+  }
+
+  .calc-button {
+    height: 5vh;
+    font-size: 1vw;
+    margin: 15vh 0 0;
+  }
+
+  p {
+    font-size: 1.5vw;
+  }
+
+  .modal-button {
+    height: 5vh;
+    font-size: 1vw;
+  }
+}
