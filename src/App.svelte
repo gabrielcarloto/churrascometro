@@ -18,7 +18,7 @@
   // calcula os valores do box e da margem do botão
   // para não ter problemas ao abrir o teclado em dispositivos mobile
   const windowHeight = window.innerHeight;
-  const boxHeight = windowHeight / 2;
+  const boxHeight = windowHeight < 700 ? windowHeight * 0.6 : windowHeight / 2;
   const buttonMarginTop = windowHeight < 700 ? boxHeight / 10 : boxHeight / 5.5;
 
   // função para fechar a modal
